@@ -20,19 +20,19 @@ pipeline {
             parallel {
                 stage('Unit') {
                     steps {
-                        //catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                                 set PATH=C:\\Python312;C:\\Python312\\Scripts;
                                 set PYTHONPATH=%WORKSPACE%
                                 pytest --junitxml=result-unit.xml test\\unit
                             '''
-                        //}
+                        }
                     }
                 }
         
                 stage('Rest') {
                     steps {
-                        //catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                                 set FLASK_APP=app\\api.py
                                 set PATH=C:\\Python312;C:\\Python312\\Scripts;C:\\Program Files\\Java\\jdk-11;C:\\Program Files\\Java\\jdk-11\\bin;
@@ -43,7 +43,7 @@ pipeline {
                                 set PYTHONPATH=%WORKSPACE%
                                 pytest --junitxml=result-rest.xml test\\rest
                             '''
-                        //}
+                        }
                     }
                 }
             }
