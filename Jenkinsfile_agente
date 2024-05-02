@@ -15,6 +15,13 @@ pipeline {
                 stash includes: 'test/**', name: 'd_test'
             }
         }
+        post {
+            always {
+                node {
+                    deleteDir() // Limpia el workspace al finalizar la etapa
+                }
+            }
+        }
         
         stage('Build') {
             agent {
@@ -25,6 +32,13 @@ pipeline {
                 bat 'hostname'
 
                 echo 'Eyyyy, esto es Python. No hay que compilar!!!'
+            }
+        }
+        post {
+            always {
+                node {
+                    deleteDir() // Limpia el workspace al finalizar la etapa
+                }
             }
         }
 
@@ -47,6 +61,13 @@ pipeline {
                             '''
                             
                             stash includes: 'result-unit.xml', name: 'a_result-unit'
+                        }
+                    }
+                }
+                post {
+                    always {
+                        node {
+                            deleteDir() // Limpia el workspace al finalizar la etapa
                         }
                     }
                 }
@@ -75,6 +96,13 @@ pipeline {
                             stash includes: 'result-rest.xml', name: 'a_result-rest'
                         }
                     }
+                    post {
+                        always {
+                            node {
+                                deleteDir() // Limpia el workspace al finalizar la etapa
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -94,11 +122,12 @@ pipeline {
                 echo 'Finalizado con éxito!!!'
             }
         }
-    }
-
-    post {
-        always {
-            deleteDir()
+        post {
+            always {
+                node {
+                    deleteDir() // Limpia el workspace al finalizar la etapa
+                }
+            }
         }
     }
 }
