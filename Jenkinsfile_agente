@@ -1,0 +1,98 @@
+pipeline {
+    agent none
+
+    stages {
+        stage('Get Code') {
+            agent any
+            steps {
+                bat 'whoami'
+                bat 'hostname'
+                
+                git 'https://github.com/AlbertoCrisostomo/helloworld.git'
+                
+                bat 'set PYTHONPATH=%WORKSPACE%'
+                stash includes: 'app/**', name: 'd_app'
+                stash includes: 'test/**', name: 'd_test'
+            }
+        }
+        
+        stage('Build') {
+            agent {
+                label 'build'
+            }
+            steps {
+                bat 'whoami'
+                bat 'hostname'
+
+                echo 'Eyyyy, esto es Python. No hay que compilar!!!'
+            }
+        }
+
+        stage('Test') {
+            parallel {
+                stage('Unit') {
+                    agent {
+                        label 'test_unit'
+                    }
+                    steps {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                            unstash 'd_app'
+                            unstash 'd_test'
+                            bat '''
+                                whoami
+                                hostname
+                                set PATH=C:\\Python312;C:\\Python312\\Scripts;
+                                set PYTHONPATH=%WORKSPACE%
+                                pytest --junitxml=result-unit.xml test\\unit
+                            '''
+                            
+                            stash includes: 'result-unit.xml', name: 'a_result-unit'
+                        }
+                    }
+                }
+        
+                stage('Rest') {
+                    agent {
+                        label 'test_rest'
+                    }
+                    steps {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
+                            unstash 'd_app'
+                            unstash 'd_test'
+                            bat '''
+                                whoami
+                                hostname
+                                set FLASK_APP=app\\api.py
+                                set PATH=C:\\Python312;C:\\Python312\\Scripts;C:\\Program Files\\Java\\jdk-11;C:\\Program Files\\Java\\jdk-11\\bin;
+                    
+                                start flask run
+                                start java -jar C:\\Users\\soporte_bcrp\\Documents\\unir_tarea\\wiremock-standalone-3.5.3.jar --port 9090 --root-dir test\\wiremock
+            
+                                set PYTHONPATH=%WORKSPACE%
+                                pytest --junitxml=result-rest.xml test\\rest
+                            '''
+                            
+                            stash includes: 'result-rest.xml', name: 'a_result-rest'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Result') {
+            agent {
+                label 'report'
+            }
+            steps {
+                unstash 'a_result-unit'
+                unstash 'a_result-rest'
+                
+                bat 'whoami'
+                bat 'hostname'
+                
+                junit 'result*.xml'
+                echo 'Finalizado con éxito!!!'
+            }
+        }
+    }
+}
