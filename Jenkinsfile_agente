@@ -14,11 +14,11 @@ pipeline {
                 stash includes: 'app/**', name: 'd_app'
                 stash includes: 'test/**', name: 'd_test'
             }
-        }
-        post {
-            always {
-                node {
-                    deleteDir() // Limpia el workspace al finalizar la etapa
+            post {
+                always {
+                    node {
+                        deleteDir() // Limpia el workspace al finalizar la etapa
+                    }
                 }
             }
         }
@@ -33,11 +33,11 @@ pipeline {
 
                 echo 'Eyyyy, esto es Python. No hay que compilar!!!'
             }
-        }
-        post {
-            always {
-                node {
-                    deleteDir() // Limpia el workspace al finalizar la etapa
+            post {
+                always {
+                    node {
+                        deleteDir() // Limpia el workspace al finalizar la etapa
+                    }
                 }
             }
         }
@@ -63,11 +63,11 @@ pipeline {
                             stash includes: 'result-unit.xml', name: 'a_result-unit'
                         }
                     }
-                }
-                post {
-                    always {
-                        node {
-                            deleteDir() // Limpia el workspace al finalizar la etapa
+                    post {
+                        always {
+                            node {
+                                deleteDir() // Limpia el workspace al finalizar la etapa
+                            }
                         }
                     }
                 }
@@ -121,11 +121,11 @@ pipeline {
                 junit 'result*.xml'
                 echo 'Finalizado con éxito!!!'
             }
-        }
-        post {
-            always {
-                node {
-                    deleteDir() // Limpia el workspace al finalizar la etapa
+            post {
+                always {
+                    node {
+                        deleteDir() // Limpia el workspace al finalizar la etapa
+                    }
                 }
             }
         }
