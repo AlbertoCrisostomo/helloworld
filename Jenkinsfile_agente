@@ -35,7 +35,7 @@ pipeline {
             }
             post {
                 always {
-                    node {
+                    node('master') {
                         deleteDir() // Limpia el workspace al finalizar la etapa
                     }
                 }
@@ -65,7 +65,7 @@ pipeline {
                     }
                     post {
                         always {
-                            node {
+                            node('master') {
                                 deleteDir() // Limpia el workspace al finalizar la etapa
                             }
                         }
@@ -98,7 +98,7 @@ pipeline {
                     }
                     post {
                         always {
-                            node {
+                            node('master') {
                                 deleteDir() // Limpia el workspace al finalizar la etapa
                             }
                         }
@@ -123,7 +123,7 @@ pipeline {
             }
             post {
                 always {
-                    node {
+                    node('master') {
                         deleteDir() // Limpia el workspace al finalizar la etapa
                     }
                 }
