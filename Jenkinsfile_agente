@@ -14,11 +14,6 @@ pipeline {
                 stash includes: 'app/**', name: 'd_app'
                 stash includes: 'test/**', name: 'd_test'
             }
-            post {
-                always {
-                    cleanWs()
-                }
-            }
         }
         
         stage('Build') {
@@ -30,11 +25,6 @@ pipeline {
                 bat 'hostname'
 
                 echo 'Eyyyy, esto es Python. No hay que compilar!!!'
-            }
-            post {
-                always {
-                    cleanWs()
-                }
             }
         }
 
@@ -57,11 +47,6 @@ pipeline {
                             '''
                             
                             stash includes: 'result-unit.xml', name: 'a_result-unit'
-                        }
-                    }
-                    post {
-                        always {
-                            cleanWs()
                         }
                     }
                 }
@@ -90,11 +75,6 @@ pipeline {
                             stash includes: 'result-rest.xml', name: 'a_result-rest'
                         }
                     }
-                    post {
-                        always {
-                            cleanWs()
-                        }
-                    }
                 }
             }
         }
@@ -112,11 +92,6 @@ pipeline {
                 
                 junit 'result*.xml'
                 echo 'Finalizado con éxito!!!'
-            }
-            post {
-                always {
-                    cleanWs()
-                }
             }
         }
     }
