@@ -16,9 +16,7 @@ pipeline {
             }
             post {
                 always {
-                    node('principal') {
-                        deleteDir() // Limpia el workspace al finalizar la etapa
-                    }
+                    cleanWs()
                 }
             }
         }
@@ -35,9 +33,7 @@ pipeline {
             }
             post {
                 always {
-                    node('agente_1') {
-                        deleteDir() // Limpia el workspace al finalizar la etapa
-                    }
+                    cleanWs()
                 }
             }
         }
@@ -65,9 +61,7 @@ pipeline {
                     }
                     post {
                         always {
-                            node('agente_2') {
-                                deleteDir() // Limpia el workspace al finalizar la etapa
-                            }
+                            cleanWs()
                         }
                     }
                 }
@@ -98,9 +92,7 @@ pipeline {
                     }
                     post {
                         always {
-                            node('agente_3') {
-                                deleteDir() // Limpia el workspace al finalizar la etapa
-                            }
+                            cleanWs()
                         }
                     }
                 }
@@ -123,9 +115,7 @@ pipeline {
             }
             post {
                 always {
-                    node('agente_4') {
-                        deleteDir() // Limpia el workspace al finalizar la etapa
-                    }
+                    cleanWs()
                 }
             }
         }
