@@ -55,5 +55,15 @@ class TestApi(unittest.TestCase):
             response.read().decode(), "2.0", "ERROR DIVIDE"
         )
 
+    def test_api_divide_0(self):
+        url = f"{BASE_URL}/calc/divide/6/0"
+        try:
+            response = urlopen(url, timeout=DEFAULT_TIMEOUT)
+            self.fail("Expected HTTPError")
+        except HTTPError as e:
+            self.assertEqual(
+                e.code, http.client.NOT_ACCEPTABLE, f"Error en el código de estado: {e.code}"
+            )
+
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
