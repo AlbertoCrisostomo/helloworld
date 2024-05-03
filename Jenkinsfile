@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
-                git 'https://github.com/AlbertoCrisostomo/helloworld.git'
+                git branch: 'develop', url: 'https://github.com/AlbertoCrisostomo/helloworld.git'
             }
         }
         
